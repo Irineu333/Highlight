@@ -14,7 +14,7 @@ fun Highlight.toAnnotatedString(
 
     val ranges = mutableListOf<AnnotatedString.Range<SpanStyle>>()
 
-    for (scheme in schemes.resolved(text, range)) {
+    for (scheme in schemes) {
 
         val spans by lazy { scheme.toSpanStyle() }
 

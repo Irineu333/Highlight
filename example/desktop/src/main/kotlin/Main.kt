@@ -4,13 +4,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.neoutils.highlight.compose.extension.spanStyle
 import com.neoutils.highlight.compose.remember.rememberHighlight
 import com.neoutils.highlight.compose.remember.rememberTextFieldValue
 import com.neoutils.highlight.core.extension.textColor
@@ -20,26 +23,34 @@ import com.neoutils.highlight.core.util.UiColor
 @Preview
 fun App() {
     var textFieldValue by remember {
-        mutableStateOf(TextFieldValue("(\\w+)\\1"))
+        mutableStateOf(TextFieldValue("name = Highlight"))
     }
 
     BasicTextField(
         value = rememberHighlight {
-            """\([^\)]*\)"""
-                .toRegex()
-                .script { match ->
-                    textColor {
-                        """\\${match.index.inc()}"""
-                            .toRegex()
-                            .fully(UiColor.Blue)
-                    }
-                }
-
             textColor {
-                """(\()[^\)]*(\))"""
+                """(\w+)\s*=\s*(\w+)"""
                     .toRegex()
                     .groups(
-                        UiColor.Green,
+                        UiColor.Blue,
+                        UiColor.Red,
+                    )
+            }
+
+            spanStyle {
+                "\\b(High)light\\b"
+                    .toRegex()
+                    .groups(
+                        SpanStyle(
+                            fontStyle = FontStyle.Italic
+                        ),
+                    )
+            }
+
+            textColor {
+                """//.+"""
+                    .toRegex()
+                    .fully(
                         UiColor.Green,
                     )
             }

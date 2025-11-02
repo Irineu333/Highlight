@@ -14,7 +14,7 @@ fun Highlight.applyTo(
     text: Spannable,
     range: IntRange = text.range
 ) {
-    for (scheme in schemes.resolved(text, range)) {
+    for (scheme in schemes) {
 
         val mergedRange = (scheme.range ?: text.range).merge(range)
 
