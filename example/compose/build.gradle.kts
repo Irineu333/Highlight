@@ -12,12 +12,12 @@ kotlin {
 
 android {
     namespace = "com.neoutils.highlight.example.compose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.neoutils.highlight.example.compose"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
