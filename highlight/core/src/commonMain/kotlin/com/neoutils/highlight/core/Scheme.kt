@@ -1,8 +1,10 @@
 package com.neoutils.highlight.core
 
-import com.neoutils.highlight.core.util.Match
+import com.neoutils.highlight.core.util.Matcher
+import com.neoutils.xregex.XRegex
 
 interface Scheme<T : Any> {
-    val regex: Regex
-    val match : Match<T>
+    val regex: XRegex
+    val matcher: Matcher<T>
+    val range: IntRange?
 }

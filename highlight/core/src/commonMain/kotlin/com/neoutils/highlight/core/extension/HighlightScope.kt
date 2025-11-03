@@ -11,3 +11,4 @@ fun HighlightScope.textColor(scope: TextColorScope.() -> Unit) {
 fun HighlightScope.backgroundColor(scope: BackgroundColorScope.() -> Unit) {
     addSchemes(BackgroundColorScope().apply(scope).schemes)
 }
+

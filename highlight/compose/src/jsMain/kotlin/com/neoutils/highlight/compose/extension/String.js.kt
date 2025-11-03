@@ -1,5 +1,6 @@
 package com.neoutils.highlight.compose.extension
 
+import com.neoutils.highlight.core.Match
 import kotlin.js.RegExp
 
 actual fun String.matchAll(
@@ -11,14 +12,16 @@ actual fun String.matchAll(
     val matches = matchAll(jsRegex)
 
     return buildList {
-        matches.forEach { match ->
+        matches.forEachIndexed { index, match ->
 
             val indices = match.indices
             val groupsWithIndex = match.iterator().withIndex()
 
             add(
                 Match(
+                    index = index,
                     text = match.toString(),
+                    range = indices[0].unsafeCast<IntArray>().toRange(),
                     groups = buildList {
                         groupsWithIndex.forEach { (index, group) ->
                             val range = indices[index]?.unsafeCast<IntArray>()

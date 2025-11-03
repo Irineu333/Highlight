@@ -4,7 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import com.neoutils.highlight.core.Highlight
 import com.neoutils.highlight.core.scheme.BackgroundColorScheme
-import com.neoutils.highlight.core.util.Match
+import com.neoutils.highlight.core.util.Matcher
 import com.neoutils.highlight.core.util.UiColor
 import com.neoutils.highlight.view.extension.applyTo
 import com.neoutils.highlight.view.extension.getFirstLineStart
@@ -45,13 +45,17 @@ class LinesHighlightTextWatcher(
         val lastLineEnd: Int = text.getLastLineEnd(end = end)
 
         text.removeSpans(firstLineStart, lastLineEnd)
-        highlight.applyTo(text, firstLineStart, lastLineEnd)
+
+        highlight.applyTo(
+            text = text,
+            range = firstLineStart until lastLineEnd
+        )
 
         if (viewModifiedLines) {
             Highlight(
                 BackgroundColorScheme(
                     regex = "[^\n]+".toRegex(),
-                    match = Match.fully(
+                    matcher = Matcher.fully(
                         UiColor.Rgb(
                             Random.nextInt(255),
                             Random.nextInt(255),
@@ -59,7 +63,10 @@ class LinesHighlightTextWatcher(
                         )
                     )
                 )
-            ).applyTo(text, firstLineStart, lastLineEnd)
+            ).applyTo(
+                text = text,
+                range = firstLineStart until lastLineEnd
+            )
         }
     }
 }

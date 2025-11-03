@@ -1,38 +1,34 @@
 package com.neoutils.highlight.view.extension
 
-import android.graphics.Typeface
-import android.text.*
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.SpannedString
 import com.neoutils.highlight.core.Highlight
-import com.neoutils.highlight.core.Scheme
-import com.neoutils.highlight.core.scheme.BackgroundColorScheme
-import com.neoutils.highlight.core.scheme.TextColorScheme
-import com.neoutils.highlight.view.scheme.SpanScheme
-import com.neoutils.highlight.view.scheme.TextFontScheme
-import com.neoutils.highlight.view.scheme.TextStyleScheme
-import com.neoutils.highlight.view.span.TextFontSpan
-import com.neoutils.highlight.view.util.UiStyle
+import com.neoutils.highlight.core.extension.merge
+import com.neoutils.highlight.core.extension.plus
+import com.neoutils.highlight.core.extension.range
+import com.neoutils.xregex.extension.findAll
 
 fun Highlight.applyTo(
     text: Spannable,
-    start: Int = 0,
-    end: Int = text.length
+    range: IntRange = text.range
 ) {
-
     for (scheme in schemes) {
 
-        for (result in scheme.regex.findAll(text.subSequence(0, end), start)) {
+        val mergedRange = (scheme.range ?: text.range).merge(range)
 
-            val spans = scheme.toParcelableSpans()
+        for (result in scheme.regex.findAll(text, mergedRange)) {
 
-            for ((index, group) in result.groups.withIndex()) {
+            val spans by lazy { scheme.toParcelableSpan() }
+
+            for (group in result.groups) {
 
                 if (group == null) continue
+                val span = spans[group.index] ?: continue
 
                 text.setSpan(
-                    spans.getOrNull(index),
+                    span,
                     group.range.first,
                     group.range.last + 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -41,6 +37,7 @@ fun Highlight.applyTo(
         }
     }
 }
+
 
 fun Highlight.toSpannedString(
     text: String
@@ -51,55 +48,5 @@ fun Highlight.toSpannedString(
     )
 }
 
-private fun <T : Any> Scheme<T>.toParcelableSpans(): List<ParcelableSpan?> {
-
-    return when (this) {
-
-        is SpanScheme -> match.values
-
-        is BackgroundColorScheme -> {
-            match.values.map {
-
-                if (it == null) return@map null
-
-                BackgroundColorSpan(it.toIntColor())
-            }
-        }
-
-        is TextColorScheme -> {
-            match.values.map {
-
-                if (it == null) return@map null
-
-                ForegroundColorSpan(it.toIntColor())
-            }
-        }
-
-        is TextStyleScheme -> {
-            match.values.map {
-
-                if (it == null) return@map null
-
-                StyleSpan(
-                    when (it) {
-                        UiStyle.BOLD -> Typeface.BOLD
-                        UiStyle.ITALIC -> Typeface.ITALIC
-                        UiStyle.BOLD_ITALIC -> Typeface.BOLD_ITALIC
-                    }
-                )
-            }
-        }
-
-        is TextFontScheme -> {
-            match.values.map {
-                TextFontSpan(
-                    typeface = it ?: return@map null
-                )
-            }
-        }
-
-        else -> error("Unknown scheme type $this")
-    }
-}
 
 

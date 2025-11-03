@@ -19,12 +19,13 @@ class SpanSchemeExample(
     init {
         text = Highlight {
             span {
-                fully(
-                    regex = "\\bspan\\b".toRegex(),
-                    ForegroundColorSpan(
-                        Color.GREEN
+                "\\bspan\\b"
+                    .toRegex()
+                    .fully(
+                        ForegroundColorSpan(
+                            Color.GREEN
+                        )
                     )
-                )
             }
         }.toSpannedString(
             "Example of span"

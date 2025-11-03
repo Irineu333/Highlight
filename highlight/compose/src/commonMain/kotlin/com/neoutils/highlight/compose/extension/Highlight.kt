@@ -2,30 +2,36 @@ package com.neoutils.highlight.compose.extension
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import com.neoutils.highlight.compose.scheme.SpanStyleScheme
 import com.neoutils.highlight.core.Highlight
-import com.neoutils.highlight.core.Scheme
-import com.neoutils.highlight.core.scheme.BackgroundColorScheme
-import com.neoutils.highlight.core.scheme.TextColorScheme
+import com.neoutils.highlight.core.extension.merge
+import com.neoutils.highlight.core.extension.range
+import com.neoutils.xregex.extension.findAll
 
-fun Highlight.toAnnotatedString(text: String): AnnotatedString {
-    val spanStyles = mutableListOf<AnnotatedString.Range<SpanStyle>>()
+fun Highlight.toAnnotatedString(
+    text: String,
+    range: IntRange = text.range
+): AnnotatedString {
+
+    val ranges = mutableListOf<AnnotatedString.Range<SpanStyle>>()
 
     for (scheme in schemes) {
 
-        val spans = scheme.toSpanStyle()
+        val spans by lazy { scheme.toSpanStyle() }
 
-        for (result in text.matchAll(scheme.regex.pattern)) {
+        val mergedRange = (scheme.range ?: text.range).merge(range)
 
-            for ((index, group) in result.groups.withIndex()) {
+        for (result in scheme.regex.findAll(text, mergedRange)) {
+
+            for (group in result.groups) {
 
                 if (group == null) continue
+                val span = spans[group.index] ?: continue
 
-                spanStyles.add(
+                ranges.addOrMerge(
                     AnnotatedString.Range(
-                        item = spans.getOrNull(index) ?: continue,
+                        item = span,
                         start = group.range.first,
-                        end = group.range.last + 1
+                        end = group.range.last + 1,
                     )
                 )
             }
@@ -34,38 +40,46 @@ fun Highlight.toAnnotatedString(text: String): AnnotatedString {
 
     return AnnotatedString(
         text = text,
-        spanStyles = spanStyles
+        spanStyles = ranges
     )
 }
 
-private fun <T : Any> Scheme<T>.toSpanStyle(): List<SpanStyle?> {
+fun MutableList<AnnotatedString.Range<SpanStyle>>.addOrMerge(
+    spanStyle: AnnotatedString.Range<SpanStyle>
+) {
 
-    return when (this) {
-
-        is SpanStyleScheme -> match.values
-
-        is TextColorScheme -> {
-            match.values.map {
-
-                if (it == null) return@map null
-
-                SpanStyle(
-                    color = it.toColor()
-                )
-            }
-        }
-
-        is BackgroundColorScheme -> {
-            match.values.map {
-
-                if (it == null) return@map null
-
-                SpanStyle(
-                    background = it.toColor()
-                )
-            }
-        }
-
-        else -> error("Unknown scheme type $this")
+    val collisions = filter {
+        it.start < spanStyle.end && spanStyle.start < it.end
     }
+
+    if (collisions.isEmpty()) {
+        add(spanStyle)
+        return
+    }
+
+    removeAll(collisions)
+
+    addAll(
+        collisions.flatMap {
+            buildList {
+                if (it.start < spanStyle.start) {
+                    add(it.copy(end = spanStyle.start))
+                }
+
+                add(
+                    it.copy(
+                        item = it.item.merge(spanStyle.item),
+                        start = maxOf(it.start, spanStyle.start),
+                        end = minOf(it.end, spanStyle.end)
+                    )
+                )
+
+                if (it.end > spanStyle.end) {
+                    add(it.copy(start = spanStyle.end))
+                }
+            }
+        }
+    )
+
+    add(spanStyle)
 }

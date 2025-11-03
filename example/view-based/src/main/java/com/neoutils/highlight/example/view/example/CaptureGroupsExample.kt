@@ -18,11 +18,12 @@ class CaptureGroupsExample(
     init {
         text = Highlight {
             textColor {
-                groups(
-                    regex = "(\"\\w+\")\\s*=\\s*(\"\\w+\")".toRegex(),
-                    UiColor.Blue,
-                    UiColor.Green
-                )
+                """("\w+")\s*=\s*("\w+")"""
+                    .toRegex()
+                    .groups(
+                        UiColor.Blue,
+                        UiColor.Green
+                    )
             }
         }.toSpannedString(
             text = "\"name\" = \"Irineu\""

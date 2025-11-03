@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import extension.config
 
 plugins {
-    alias(libs.plugins.neoutils.android.library)
+    alias(libs.plugins.neoutils.core)
 }
 
 android {
@@ -11,7 +11,9 @@ android {
 
 dependencies {
     api(project(":highlight:core"))
-    implementation(libs.androidx.appcompat)
+
+    api(libs.androidx.appcompat)
+    api(libs.neoutils.xregex)
 }
 
 mavenPublishing {

@@ -10,26 +10,28 @@ import com.neoutils.highlight.view.text.LinesHighlightTextWatcher
 
 private val CodeHighlight = Highlight {
     textColor {
-        fully(
-            regex = "\\b(fun)\\b".toRegex(),
-            UiColor.Hex(hex = "#0033B3")
-        )
+        "\\b(fun)\\b"
+            .toRegex()
+            .fully(
+                UiColor.Hex(hex = "#0033B3")
+            )
 
-        groups(
-            regex = "\\b(fun)\\b\\s*\\b(\\w+)\\b\\([^()]*\\)".toRegex(),
-            UiColor.Hex(hex = "#0033B3"),
-            UiColor.Hex(hex = "#00627A")
-        )
+        """\b(fun)\b\s*\b(\w+)\b\([^()]*\)"""
+            .toRegex()
+            .groups(
+                UiColor.Hex(hex = "#0033B3"),
+                UiColor.Hex(hex = "#00627A")
+            )
 
-        fully(
-            regex = "@.+".toRegex(),
+        "@.+".toRegex().fully(
             UiColor.Hex(hex = "#93880D")
         )
 
-        fully(
-            regex = "\"[^\"]*\"".toRegex(),
-            UiColor.Hex(hex = "#067D17")
-        )
+        "\".*?\""
+            .toRegex()
+            .fully(
+                UiColor.Hex(hex = "#067D17")
+            )
     }
 }
 

@@ -19,16 +19,18 @@ class BackgroundSchemeExample(
     init {
         text = Highlight {
             backgroundColor {
-                fully(
-                    regex = "\\bcolor\\b".toRegex(),
-                    UiColor.Blue
-                )
+                "\\bcolor\\b"
+                    .toRegex()
+                    .fully(
+                        UiColor.Blue
+                    )
             }
             textColor {
-                fully(
-                    regex = "\\bcolor\\b".toRegex(),
-                    UiColor.White
-                )
+                "\\bcolor\\b"
+                    .toRegex()
+                    .fully(
+                        UiColor.White
+                    )
             }
         }.toSpannedString(
             text = "Example of background color."

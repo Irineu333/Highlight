@@ -33,11 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <com.neoutils.highlight.example.view.example.JavaCaseExample
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
     <com.neoutils.highlight.example.view.example.SpanSchemeExample
             android:textSize="18sp"
             android:layout_width="wrap_content"

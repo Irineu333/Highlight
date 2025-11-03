@@ -16,15 +16,16 @@ class TextFontSchemeExample(
     init {
         text = Highlight {
             textFont {
-                fully(
-                    regex = "\\bfont\\b".toRegex(),
-                    checkNotNull(
-                        ResourcesCompat.getFont(
-                            context,
-                            R.font.pacifico_regular
+                "\\bfont\\b"
+                    .toRegex()
+                    .fully(
+                        checkNotNull(
+                            ResourcesCompat.getFont(
+                                context,
+                                R.font.pacifico_regular
+                            )
                         )
                     )
-                )
             }
         }.toSpannedString(
             text = "Example of font style."

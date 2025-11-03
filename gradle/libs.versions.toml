@@ -1,12 +1,12 @@
 [versions]
-agp = "8.5.2"
+agp = "8.11.2"
 annotation = "1.9.1"
-kotlin = "2.0.20" # Gradle 7.5 ~ 8.8 & AGP 7.4.2 ~ 8.5
-cmp = "1.7.0" # Jetpack Compose 1.7.0 & APG 8.1+
+kotlin = "2.1.21"
+cmp = "1.8.2"
 
 core = "1.13.1" # used for library
 appcompat = "1.7.0" # used for library
-jetpackCompose = "1.7.5"  # used for library
+jetpackCompose = "1.8.2" # used for library
 
 material = "1.12.0"
 material3 = "1.3.1"
@@ -14,6 +14,9 @@ material3 = "1.3.1"
 activity = "1.9.3"
 lifecycleRuntime = "2.8.7"
 mavenPublish = "0.30.0"
+
+xregex = "1.0.0-rc1"
+pcre4j = "0.4.3"
 
 [libraries]
 # plugins
@@ -24,6 +27,7 @@ plugin-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", 
 # multiplatform
 plugin-compose-compiler = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+neoutils-xregex = { group = "com.neoutils.xregex", name = "xregex", version.ref = "xregex" }
 
 # android
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
@@ -37,10 +41,14 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "jetpackCompose" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "jetpackCompose" }
 androidx-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "jetpackCompose" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "jetpackCompose"  }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "jetpackCompose"  }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "jetpackCompose"  }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"  }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "jetpackCompose" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "jetpackCompose" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "jetpackCompose" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
+# jvm
+pcre4j-regex = { group = "org.pcre4j", name = "regex", version.ref = "pcre4j" }
+pcre4j-jna = { group = "org.pcre4j", name = "jna", version.ref = "pcre4j" }
 
 [plugins]
 # android
@@ -61,4 +69,4 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "cmp" }
 
 # internal
-neoutils-android-library = { id = "com.neoutils.android-library", version = "undefined" }
+neoutils-core = { id = "com.neoutils.core", version = "undefined" }

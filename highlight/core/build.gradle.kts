@@ -2,10 +2,11 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 import extension.config
 
 plugins {
-    alias(libs.plugins.neoutils.android.library)
+    alias(libs.plugins.neoutils.core)
 }
 
 kotlin {
+
     jvm()
 
     js(IR) {
@@ -15,7 +16,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.androidx.annotation)
+            api(libs.androidx.annotation)
+            api(libs.neoutils.xregex)
         }
     }
 }

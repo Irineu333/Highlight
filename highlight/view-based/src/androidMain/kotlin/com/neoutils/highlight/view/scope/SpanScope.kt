@@ -2,20 +2,23 @@ package com.neoutils.highlight.view.scope
 
 import android.text.ParcelableSpan
 import com.neoutils.highlight.core.scope.SchemeScope
-import com.neoutils.highlight.core.util.Match
+import com.neoutils.highlight.core.util.Matcher
 import com.neoutils.highlight.view.scheme.SpanScheme
+import com.neoutils.xregex.XRegex
 
 class SpanScope internal constructor() :
     SchemeScope<ParcelableSpan, SpanScheme>() {
 
-    override fun match(
-        regex: Regex,
-        match: Match<ParcelableSpan>
+    override fun addScheme(
+        regex: XRegex,
+        matcher: Matcher<ParcelableSpan>,
+        range: IntRange?
     ) {
         builder.add(
             SpanScheme(
-                regex,
-                match
+                regex = regex,
+                matcher = matcher,
+                range = range
             )
         )
     }

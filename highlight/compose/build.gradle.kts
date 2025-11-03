@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 import extension.config
 
 plugins {
-    alias(libs.plugins.neoutils.android.library)
+    alias(libs.plugins.neoutils.core)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
 }

@@ -13,14 +13,17 @@ fun CaptureGroupsExample() {
 
     val annotatedString = rememberHighlight {
         textColor {
-            groups(
-                regex = "(\"\\w+\")\\s*=\\s*(\"\\w+\")".toRegex(),
-                UiColor.Blue,
-                UiColor.Green
-            )
+            """("\w+")\s*=\s*("\w+")"""
+                .toRegex()
+                .groups(
+                    UiColor.Blue,
+                    UiColor.Green
+                )
         }
     }.rememberAnnotatedString(
-        text = "\"name\" = \"Irineu\""
+        text = """
+            "name" = "Irineu"
+        """.trimIndent()
     )
 
     Text(text = annotatedString)

@@ -24,26 +24,30 @@ fun CodeHighlightExample(modifier: Modifier = Modifier) {
 
     val highlight = rememberHighlight {
         textColor {
-            fully(
-                regex = "\\b(fun)\\b".toRegex(),
-                UiColor.Hex(hex = "#E66123")
-            )
+            "\\b(fun)\\b"
+                .toRegex()
+                .fully(
+                    UiColor.Hex(hex = "#E66123")
+                )
 
-            groups(
-                regex = "\\b(\\w+)\\b\\((\\w+\\s*=)?[^)]*\\)".toRegex(),
-                UiColor.Hex(hex = "#00627A"),
-                UiColor.Hex(hex = "#548AF7"),
-            )
+            """\b(\w+)\b\((\w+\s*=)?[^)]*\)"""
+                .toRegex()
+                .groups(
+                    UiColor.Hex(hex = "#00627A"),
+                    UiColor.Hex(hex = "#548AF7"),
+                )
 
-            fully(
-                regex = "@.+".toRegex(),
-                UiColor.Hex(hex = "#93880D")
-            )
+            "@\\w+"
+                .toRegex()
+                .fully(
+                    UiColor.Hex(hex = "#93880D")
+                )
 
-            fully(
-                regex = "\"[^\"]*\"".toRegex(),
-                UiColor.Hex(hex = "#067D17")
-            )
+            """"[^"]*""""
+                .toRegex()
+                .fully(
+                    UiColor.Hex(hex = "#067D17")
+                )
         }
     }
 

@@ -18,10 +18,9 @@ class StyleSchemeExample(
     init {
         text = Highlight {
             textStyle {
-                fully(
-                    regex = "\\bstyle\\b".toRegex(),
-                    value = UiStyle.BOLD
-                )
+                "\\bstyle\\b"
+                    .toRegex()
+                    .fully(UiStyle.BOLD)
             }
         }.toSpannedString(
             text = "Example of style."

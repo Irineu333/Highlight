@@ -4,14 +4,20 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+kotlin {
+    jvmToolchain(
+        jdkVersion = 17
+    )
+}
+
 android {
     namespace = "com.neoutils.highlight.example.compose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.neoutils.highlight.example.compose"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -28,13 +34,8 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -66,23 +67,4 @@ dependencies {
     implementation(libs.androidx.material3)
 
     debugImplementation(libs.androidx.ui.tooling)
-}
-
-repositories {
-
-    google()
-    mavenCentral()
-
-    maven {
-        url = uri("https://central.sonatype.com/api/v1/publisher/deployments/download/")
-
-        credentials(HttpHeaderCredentials::class) {
-            name = "Authorization"
-            value = "Bearer ${findProperty("mavenCentralToken")}"
-        }
-
-        authentication {
-            create<HttpHeaderAuthentication>("header")
-        }
-    }
 }

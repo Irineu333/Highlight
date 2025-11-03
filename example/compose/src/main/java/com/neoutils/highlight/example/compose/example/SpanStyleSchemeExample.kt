@@ -16,15 +16,16 @@ fun SpanStyleSchemeExample() {
 
     val annotatedString = rememberHighlight {
         spanStyle {
-            fully(
-                regex = "\\bstyled\\b".toRegex(),
-                SpanStyle(
-                    color = Color.White,
-                    background = Color.Black,
-                    fontStyle = FontStyle.Italic,
-                    textDecoration = TextDecoration.LineThrough,
+            "\\bstyled\\b"
+                .toRegex()
+                .fully(
+                    SpanStyle(
+                        color = Color.White,
+                        background = Color.Black,
+                        fontStyle = FontStyle.Italic,
+                        textDecoration = TextDecoration.LineThrough,
+                    )
                 )
-            )
         }
     }.rememberAnnotatedString(
         text = "Example of styled text."

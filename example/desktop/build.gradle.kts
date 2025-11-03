@@ -7,6 +7,12 @@ plugins {
 group = "com.neoutils.highlight.example"
 version = "1.0.0"
 
+kotlin {
+    jvmToolchain(
+        jdkVersion = 17
+    )
+}
+
 dependencies {
 
     implementation(project(":highlight:compose"))
@@ -26,25 +32,6 @@ compose.desktop {
         nativeDistributions {
             packageName = "desktop"
             packageVersion = "1.0.0"
-        }
-    }
-}
-
-repositories {
-
-    google()
-    mavenCentral()
-
-    maven {
-        url = uri("https://central.sonatype.com/api/v1/publisher/deployments/download/")
-
-        credentials(HttpHeaderCredentials::class) {
-            name = "Authorization"
-            value = "Bearer ${findProperty("mavenCentralToken")}"
-        }
-
-        authentication {
-            create<HttpHeaderAuthentication>("header")
         }
     }
 }

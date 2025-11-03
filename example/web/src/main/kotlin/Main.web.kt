@@ -15,9 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,7 +24,6 @@ import com.neoutils.highlight.compose.extension.spanStyle
 import com.neoutils.highlight.compose.remember.rememberHighlight
 import com.neoutils.highlight.compose.remember.rememberTextFieldValue
 import com.neoutils.highlight.core.extension.textColor
-import com.neoutils.highlight.core.util.Match
 import com.neoutils.highlight.core.util.UiColor
 import org.jetbrains.skiko.wasm.onWasmReady
 
@@ -46,24 +43,22 @@ fun main() {
                 BasicTextField(
                     value = rememberHighlight {
                         textColor {
-                            match(
-                                regex = "(\\w+)\\s*=\\s*(\\w+)".toRegex(),
-                                match = Match.groups(
+                            """(\w+)\s*=\s*(\w+)"""
+                                .toRegex()
+                                .groups(
                                     UiColor.Blue,
                                     UiColor.Red
                                 )
-                            )
                         }
 
                         spanStyle {
-                            match(
-                                regex = "\\b(High)(light)\\b".toRegex(),
-                                match = Match.fully(
+                            "\\b(High)(light)\\b"
+                                .toRegex()
+                                .fully(
                                     SpanStyle(
                                         fontStyle = FontStyle.Italic
                                     )
                                 )
-                            )
                         }
                     }.rememberTextFieldValue(value),
                     onValueChange = {

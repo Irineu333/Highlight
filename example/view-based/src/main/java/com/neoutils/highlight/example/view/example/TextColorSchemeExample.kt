@@ -15,10 +15,9 @@ class TextColorSchemeExample(
     init {
         text = Highlight {
             textColor {
-                fully(
-                    regex = "\\bcolor\\b".toRegex(),
-                    value = UiColor.Blue
-                )
+                "\\bcolor\\b"
+                    .toRegex()
+                    .fully(UiColor.Blue)
             }
         }.toSpannedString(
             text = "Example of foreground color."
