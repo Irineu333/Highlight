@@ -28,8 +28,8 @@ You can pass a list of schemes directly through the constructor.
 val highlight = Highlight(
     TextColorScheme(
         regex = "\\bcolor\\b".toRegex(),
-        match = Match.fully(UiColor.Black)
-    )
+        matcher = Matcher.fully(UiColor.Black),
+    ),
 )
 
 // Jetpack Compose
@@ -44,10 +44,11 @@ Or use the builder scope to create patterns:
 ```kotlin
 val highlight = Highlight {
     textColor {
-        fully(
-            regex = "\\bcolor\\b".toRegex(),
-            value = UiColor.Black
-        )
+        "\\bcolor\\b"
+            .toRegex()
+            .fully(
+                UiColor.Black,
+            )
     }
 }
 
@@ -67,34 +68,31 @@ In Compose environments, use `rememberAnnotatedString` to integrate highlighting
 ```kotlin
 val highlight = rememberHighlight {
     spanStyle {
-        fully(
-            regex = "\\bstyled\\b".toRegex(),
-            value = SpanStyle(
-                color = Color.White,
-                background = Color.Black,
-                fontStyle = FontStyle.Italic,
+        "\\bstyled\\b"
+            .toRegex()
+            .fully(
+                SpanStyle(
+                    color = Color.White,
+                    background = Color.Black,
+                    fontStyle = FontStyle.Italic,
+                )
             )
-        )
     }
 }
 
-Text(
-    text = highlight.rememberAnnotatedString(
-        "Example of styled text."
-    )
-)
+Text(text = highlight.rememberAnnotatedString("Example of styled text."))
 ```
 
 Or use `rememberTextFieldValue` for `TextFieldValue`:
 
-``` kotlin
+```kotlin
 val textFieldValue = rememberSaveable { mutableStateOf(TextFieldValue()) }
 
 BasicTextField(
     value = highlight.rememberTextFieldValue(
-        textFieldValue.value
+        textFieldValue.value,
     ).copy(
-        composition = null
+        composition = null,
     ),
     onValueChange = {
         textFieldValue.value = it
@@ -108,26 +106,26 @@ In View-based environments, use `toSpannedString`, or `apply` to apply highlight
 
 ### Usage Example
 
-``` kotlin
+```kotlin
 val highlight = Highlight {
     backgroundColor {
-        fully(
-            regex = "\\bcolor\\b".toRegex(),
-            value = UiColor.Blue
-        )
+        "\\bcolor\\b"
+            .toRegex()
+            .fully(
+                UiColor.Blue,
+            )
     }
     textColor {
-        fully(
-            regex = "\\bcolor\\b".toRegex(),
-            value = UiColor.White
-        )
+        "\\bcolor\\b"
+            .toRegex()
+            .fully(
+                UiColor.White,
+            )
     }
 }
 
 // TextView
-binding.tvExample.text = highlight.toSpannedString(
-    "Background color example."
-)
+binding.tvExample.text = highlight.toSpannedString("Background color example.")
 
 // EditText (Editable or Spannable)
 highlight.apply(binding.etExample)
@@ -135,24 +133,23 @@ highlight.apply(binding.etExample)
 
 ## Groups
 
-Instead of applying the highlight to the entire match using `Match.fully(..)`, you can separate it by groups, allowing for more complex and specific highlights.
+Instead of applying the highlight to the entire match using `fully(...)`, you can separate it by groups with `groups(...)`, allowing more complex and specific highlights.
 
 ### Usage Example
 
 ```kotlin
 val highlight = rememberHighlight {
     textColor {
-        groups(
-            regex = "(\\w+)\\s*=\\s*(\\w+)".toRegex(),
-            UiColor.Blue,
-            UiColor.Green
-        )
+        "(\\w+)\\s*=\\s*(\\w+)"
+            .toRegex()
+            .groups(
+                UiColor.Blue,
+                UiColor.Green,
+            )
     }
 }
 
-Text(
-    text = highlight.rememberAnnotatedString("name = Highlight")
-)
+Text(text = highlight.rememberAnnotatedString("name = Highlight"))
 ```
 
 ## Screenshots
@@ -172,9 +169,9 @@ Add the following dependencies to your `build.gradle.kts` file:
 ```kotlin
 dependencies {
     // For highlighting in Views
-    implementation("com.neoutils.highlight:highlight-view:2.2.0")
+    implementation("com.neoutils.highlight:highlight-view:2.3.0")
     
     // For highlighting in Compose
-    implementation("com.neoutils.highlight:highlight-compose:2.2.0")
+    implementation("com.neoutils.highlight:highlight-compose:2.3.0")
 }
 ```
